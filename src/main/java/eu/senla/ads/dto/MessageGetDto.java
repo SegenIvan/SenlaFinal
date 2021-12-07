@@ -5,21 +5,17 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
-
+import java.time.LocalDate;
 
 @Getter
 @Setter
-public class UserDto {
+public class MessageGetDto {
     @NotBlank
-    @Positive
-    private Long id;
+    private LocalDate dateSent;
     @NotBlank
-    private String name;
+    private String text;
     @NotBlank
-    private String phone;
+    private UserIdDto recipient;
     @NotBlank
-    private String email;
-    @NotBlank
-    @Positive
-    private int rating;
+    private UserIdDto sender;
 }

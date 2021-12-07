@@ -6,15 +6,19 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Getter
 @Setter
-public class AnnouncementPostDto {
+public class MessagePostDto {
+    @NotNull
+    private LocalDate dateSent;
     @NotBlank
     private String text;
-    @NotBlank
-    private String tag;
     @NotNull
     @Positive
-    private Long authorId;
+    private Long recipientId;
+    @NotNull
+    @Positive
+    private Long senderId;
 }

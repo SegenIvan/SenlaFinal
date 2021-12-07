@@ -4,6 +4,7 @@ import eu.senla.ads.api.service.IUserService;
 import eu.senla.ads.dto.CommentPutDto;
 import eu.senla.ads.dto.UserDto;
 import eu.senla.ads.dto.UserPutDto;
+import eu.senla.ads.dto.UserRatingDto;
 import eu.senla.ads.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -45,11 +46,19 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id,
+    public ResponseEntity<Void> update(@PathVariable Long id,
                                           @RequestBody @Valid UserPutDto userPutDto) throws Exception {
         userPutDto.setId(id);
         userService.update(userPutDto);
         logger.info("received request: /update/" + id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MODERATOR')")
+    @PutMapping("/setRating")
+    public ResponseEntity<Void> setRating(@RequestBody UserRatingDto userRatingDto) throws Exception {
+        userService.setRating(userRatingDto);
+        logger.info("received request: /set user rating:" + userRatingDto);
         return ResponseEntity.noContent().build();
     }
 }

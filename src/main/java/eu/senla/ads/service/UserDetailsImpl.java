@@ -31,15 +31,15 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
+        List<GrantedAuthority> authorities = user.getCredentials().getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(
                 user.getId(),
-                user.getLogin(),
+                user.getCredentials().getLogin(),
                 user.getEmail(),
-                user.getPassword(),
+                user.getCredentials().getPassword(),
                 authorities);
     }
 
@@ -104,10 +104,7 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl other = (UserDetailsImpl) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+            return other.id == null;
+        } else return id.equals(other.id);
     }
 }

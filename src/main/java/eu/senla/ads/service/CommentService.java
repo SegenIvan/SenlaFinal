@@ -13,10 +13,13 @@ import eu.senla.ads.model.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,7 +43,7 @@ public class CommentService implements ICommentService {
 
     @Override
     public CommentDto findById(Long id) {
-        Comment comment = commentDao.findById(id).get();
+        Comment comment = commentDao.findById(id).orElseThrow(()-> new EntityExistsException("not found comment with id:" + id));
         return modelMapper.map(comment,CommentDto.class);
     }
 
@@ -51,6 +54,7 @@ public class CommentService implements ICommentService {
         Comment comment = modelMapper.map(commentDto,Comment.class);
         comment.setAnnouncement(announcement);
         comment.setAuthor(user);
+        comment.setDateOfCreate(LocalDate.now());
         commentDao.save(comment);
         return comment.getId();
     }

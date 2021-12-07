@@ -13,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "announcements")
-public class Announcement extends AEntity {
+@Table(name = "announcements",indexes = {@Index(name = "tagIndex", columnList = "tag")})
+public class Announcement extends AEntity{
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -34,4 +34,6 @@ public class Announcement extends AEntity {
     private String text;
     @Column(name = "tag")
     private String tag;
+    @Column(name = "is_paid")
+    private Boolean isPaid;
 }

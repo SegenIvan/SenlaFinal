@@ -1,8 +1,6 @@
 package eu.senla.ads.api.service;
 
-import eu.senla.ads.dto.AnnouncementDto;
-import eu.senla.ads.dto.AnnouncementPostDto;
-import eu.senla.ads.dto.AnnouncementPutDto;
+import eu.senla.ads.dto.*;
 
 import java.util.List;
 
@@ -12,9 +10,12 @@ public interface IAnnouncementService {
     Long create(AnnouncementPostDto announcementPostDto) throws Exception;
     void delete(Long id);
     void update(AnnouncementPutDto announcementDto) throws Exception;
-    List<AnnouncementDto> sortByDateOfCreate();
+    List<AnnouncementGetDto> sortByDateOfCreate();
     List<AnnouncementDto> getAnnouncementsByAuthor(Long id);
-    List<AnnouncementDto> findByTag(String tag);
+    List<AnnouncementGetDto> findByTag(String tag);
     void offAnnouncement(AnnouncementDto announcementDto);
-    List<AnnouncementDto> getAllActive();
+    List<AnnouncementGetDto> getAllActive();
+    List<AnnouncementDtoWithRating> sortByAuthorRating();
+    List<CommentDto> getCommentsByAnnouncement(Long id);
+    void pay(Long id);
 }

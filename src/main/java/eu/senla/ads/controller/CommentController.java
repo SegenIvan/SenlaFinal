@@ -1,28 +1,26 @@
 package eu.senla.ads.controller;
 
-import eu.senla.ads.api.service.IAnnouncementService;
 import eu.senla.ads.api.service.ICommentService;
-import eu.senla.ads.api.service.IUserService;
 import eu.senla.ads.dto.CommentDto;
 import eu.senla.ads.dto.CommentPostDto;
 import eu.senla.ads.dto.CommentPutDto;
-import lombok.RequiredArgsConstructor;
+import eu.senla.ads.dto.IdDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-@RequiredArgsConstructor
 @Validated
 public class CommentController {
-    private final ICommentService commentService;
+    @Autowired
+    private ICommentService commentService;
     private static final Logger logger = LogManager.getLogger(CommentController.class);
 
     @GetMapping("/{id}")
@@ -53,9 +51,8 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addComment(@RequestBody @Valid CommentPostDto commentPostDto) throws Exception {
-        commentService.create(commentPostDto);
+    public ResponseEntity<IdDto> addComment(@RequestBody @Valid CommentPostDto commentPostDto) throws Exception {
         logger.info("received request: /addComment " + commentPostDto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new IdDto(commentService.create(commentPostDto)));
     }
 }
